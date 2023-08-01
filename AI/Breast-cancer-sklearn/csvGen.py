@@ -1,8 +1,55 @@
 import pandas as pd
+import numpy as np
 
-data = pd.read_csv("breast-cancer-wisconsin.data")
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 
-data.columns = ["id", "ClumpThick", "UniSize", "UniShape", "MargAd", "SingEpiCelSize", "BareNuc", "BlandChr",
-              "NormalNuc", "Mito", "Class"]
+import pickle
+    
+# data = pd.read_csv("breast-cancer-wisconsin.data")
 
-data.to_csv("data.csv", index=None, header=True)
+# data.columns = ["id", "ClumpThick", "UniSize", "UniShape", "MargAd", "SingEpiCelSize", "BareNuc", "BlandChr",
+#               "NormalNuc", "Mito", "Class"]
+
+# data.to_csv("data.csv", index=None, header=True)
+
+data = pd.read_csv("data.csv")
+
+data.drop(['id'], inplace=True, axis = 1)
+data.replace('?', -99999, inplace = True)
+
+data["Class"] = data["Class"].map(lambda x: 1 if x == 4 else 0)
+
+print(data.head())
+
+X = np.array(data.drop(["Class"], axis = 1))
+y = np.array(data["Class"])
+
+# Training and testing the models
+
+[X_train, X_test, y_train, y_test] = train_test_split(X, y, test_size = 0.1, random_state = 0)
+
+# # SVC classifier
+# Classifier = SVC(kernel = "linear")
+# model = Classifier.fit(X_train, y_train)
+# accu = model.score(X_test, y_test)
+# print("Accuracy of SVC: ", accu)
+
+# # Logistic Regression
+# Classifier2 = LogisticRegression(solver = 'liblinear')
+# model2 = Classifier2.fit(X_train, y_train)
+# accu2 = model2.score(X_test, y_test)
+# print("Accuracy of Logistic Regression: ", accu2)
+
+# pickle.dump(model, open("LogisticRegressionBreastCancerSKL.m", "wb"))
+
+loaded_model = pickle.load(open("LogisticRegressionBreastCancerSKL.m", "rb"))
+accu = loaded_model.score(X_test, y_test)
+print("Accuracy of loaded model: ", accu)
+
+
+classes = ["Benign", "Malignant"]
+sample = np.array([[8,10,10,8,7,10,9,7,1]])
+result = loaded_model.predict(sample)
+print(classes[int(result)])
