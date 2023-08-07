@@ -31,16 +31,10 @@ for i in df2.standard_value:
         bioactivity_class.append("active")
     else:
         bioactivity_class.append("intermediate")
-        
+            
+selection = ['molecule_chembl_id', 'canonical_smiles', 'standard_value']
+df3 = df2[selection]
+df3 = pd.concat([df3, pd.DataFrame({'bioactivity_class':bioactivity_class})], axis=1)
+print(df3)
 
-mol_cid = []
-for i in df2.molecule_chembl_id:
-    mol_cid.append(i)
-    
-canonical_smiles = []
-for i in df2.canonical_smiles:
-    canonical_smiles.append(i)
-    
-standard_value = []
-for i in df2.standard_value:
-    standard_value.append(i)
+df3.to_csv('bioactivity_preprocessed_data.csv', index=False)
