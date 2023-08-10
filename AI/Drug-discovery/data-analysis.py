@@ -77,3 +77,25 @@ sns.countplot(x = 'bioactivity_class', data=df_final, edgecolor='black')
 plt.xlabel('Bioactivity class', fontsize=14, fontweight='bold')
 plt.ylabel('Frequency', fontsize=14, fontweight='bold')
 plt.savefig('plot_bioactivity_class.pdf')
+
+# Scatterplot of MW versus logP
+
+plt.figure(figsize=(7.5, 7.5))
+
+sns.scatterplot(x='MW', y = 'LogP', data=df_final, hue='bioactivity_class',
+                size='pIC50', edgecolor='black', alpha=0.7)
+
+plt.xlabel('MW', fontsize=14, fontweight='bold')
+plt.ylabel('LogP', fontsize=14, fontweight='bold')
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0)
+plt.savefig('plot_MW_vs_LogP.pdf')
+
+
+plt.figure(figsize=(5.5, 5.5))
+
+sns.boxplot(x = 'bioactivity_class', y = 'pIC50', data = df_final)
+
+plt.xlabel('Bioactivity class', fontsize = 14, fontweight = 'bold')
+plt.ylabel('pIC50 value', fontsize = 14, fontweight = 'bold')
+
+plt.savefig('plot_ic50.pdf')
