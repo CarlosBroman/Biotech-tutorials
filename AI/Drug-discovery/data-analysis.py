@@ -64,5 +64,16 @@ print(df_final.pIC50.describe())
 import matplotlib.pyplot as plt
 
 ic50_values = df_final['pIC50']
-plt.hist(ic50_values)
-plt.show()
+# plt.hist(ic50_values)
+# plt.show()
+
+# Exploratory Data Analysis (Chemical Space Analysis) via Lipinski descriptors
+
+import seaborn as sns
+sns.set(style = 'ticks')
+
+plt.figure(figsize=(5.5, 5.5))
+sns.countplot(x = 'bioactivity_class', data=df_final, edgecolor='black')
+plt.xlabel('Bioactivity class', fontsize=14, fontweight='bold')
+plt.ylabel('Frequency', fontsize=14, fontweight='bold')
+plt.savefig('plot_bioactivity_class.pdf')
